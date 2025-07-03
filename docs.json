@@ -3,15 +3,25 @@
   "name": "SIGYL",
   "description": "All in one MCP",
   "theme": "maple",
+  "logo": {
+    "light": "logo/light.png",
+    "dark": "logo/dark.png",
+    "href": "https://www.sigyl.dev",
+    "alt": "Sigyl Logo"
+  },
+  "favicon": "favicon.svg",
   "colors": {
     "primary": "#2ecc40"
+  },
+  "icons": {
+    "library": "lucide"
   },
   "navigation": {
     "groups": [
       {
         "group": "Getting Started",
         "pages": [
-          "docs/index",
+          "index",
           "docs/quickstart",
           "docs/installation"
         ]

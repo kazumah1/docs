@@ -1,71 +1,51 @@
 ---
-title: Introduction
-description: "Welcome to the home of your new documentation"
+title: "Introduction"
+description: "Sigyl is the centralized access point to discover, install, and integrate Model Context Protocol (MCP) tools and servers."
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.png"
-  alt="Hero Light"
+# Get Started
+
+<Columns cols={3}>
+<Card
+  title="Build"
+  description="Create and configure MCP servers from scratch or existing projects."
+  icon="settings"
+  href="/cli-reference"
 />
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.png"
-  alt="Hero Dark"
+<Card
+  title="Deploy"
+  description="Deploy your MCP server to the cloud with one click."
+  icon="server"
+  href="/cli-reference"
+/>
+<Card
+  title="Use"
+  description="Integrate Sigyl programmatically in your JavaScript/TypeScript projects."
+  icon="arrow-down-to-line"
+  href="/sdk-reference"
+/>
+</Columns>
+
+## Welcome to Sigyl
+
+Sigyl is a unified interface for managing Model Context Protocol (MCP) tools and servers. Our mission is to make the entire MCP implementation flow, from build to integration, convenient and secure.
+
+## What we provide
+  * A public registry for finding and accessing secure MCP servers
+  * One-click build for MCP servers from new or existing projects
+  * Free server hosting
+
+<Card
+  title="Get Started in Minutes"
+  description="Follow our Quick Start guide to install your first MCP tool."
+  href="docs/quickstart"
+  icon="rocket"
 />
 
-## Setting up
+## What are MCPs?
 
-The first step to world-class documentation is setting up your editing environments.
+- **CLI**: [`@sigyl-dev/cli`](#) — install, manage, and run MCP packages from your terminal.
+- **SDK**: [`@sigyl-dev/sdk`](#) — integrate tools directly into your code via API. 
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
 
-## Make it yours
-
-Update your docs to your brand and add valuable content for the best user conversion.
-
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/content/components/accordions"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+Explore the sidebar to dive deeper.
