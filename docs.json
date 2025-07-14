@@ -10,7 +10,9 @@
   },
   "favicon": "favicon.png",
   "colors": {
-    "primary": "#2ecc40"
+    "primary": "#ffffff",
+    "dark": "#ffffff",
+    "light": "#a6a6a6"
   },
   "icons": {
     "library": "lucide"
