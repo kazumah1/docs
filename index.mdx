@@ -3,49 +3,45 @@ title: "Introduction"
 description: "Sigyl is the centralized access point to discover, install, and integrate Model Context Protocol (MCP) tools and servers."
 ---
 
-# Get Started
+# Welcome to Sigyl
 
-<Columns cols={3}>
+Sigyl is a unified interface for managing Model Context Protocol (MCP) tools and servers. Our mission is to make the entire MCP implementation flow, from build to integration, convenient and secure.
+
+## Quickstart
+Follow our simple, step-by-step guides to start using Sigyl
+
+<Columns cols={2}>
 <Card
   title="Build"
   description="Create and configure MCP servers from scratch or existing projects."
   icon="settings"
-  href="/cli-reference"
-/>
+  href="docs/build-overview"
+>
+  Generate a new MCP server with the Sigyl CLI
+</Card>
 <Card
   title="Deploy"
   description="Deploy your MCP server to the cloud with one click."
   icon="server"
-  href="/cli-reference"
-/>
+  href="docs/deploy-overview"
+>
+  Host your server for free with one click deploy
+</Card>
+</Columns>
 <Card
-  title="Use"
+  title="Connect"
   description="Integrate Sigyl programmatically in your JavaScript/TypeScript projects."
   icon="arrow-down-to-line"
-  href="/sdk-reference"
-/>
-</Columns>
-
-## Welcome to Sigyl
-
-Sigyl is a unified interface for managing Model Context Protocol (MCP) tools and servers. Our mission is to make the entire MCP implementation flow, from build to integration, convenient and secure.
+  href="docs/use-overview"
+>
+  Connect to servers on the registry and integrate into your agents
+</Card>
 
 ## What we provide
   * A public registry for finding and accessing secure MCP servers
   * One-click build for MCP servers from new or existing projects
   * Free server hosting
 
-<Card
-  title="Get Started in Minutes"
-  description="Follow our Quick Start guide to install your first MCP tool."
-  href="docs/quickstart"
-  icon="rocket"
-/>
+## What is Model Context Protocol?
 
-## What are MCPs?
-
-- **CLI**: [`@sigyl-dev/cli`](#) — install, manage, and run MCP packages from your terminal.
-- **SDK**: [`@sigyl-dev/sdk`](#) — integrate tools directly into your code via API. 
-
-
-Explore the sidebar to dive deeper.
+The [Model Context Protocol](https://modelcontextprotocol.io) is a specification for defining and serving AI tools in a standardized, machine-readable format. It abstracts tools as self-describing JSON interfaces with defined input/output schemas and execution semantics. MCP servers expose these tools over HTTP, allowing models or agents to query available capabilities, validate inputs, and invoke execution endpoints. This protocol enables composable, language-agnostic tool integration, facilitates server-side enforcement of tool behavior, and supports dynamic toolchains across LLM and agentic systems.

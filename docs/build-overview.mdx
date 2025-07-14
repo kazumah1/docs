@@ -1,0 +1,223 @@
+---
+title: "Build MCP Servers"
+description: "Build and configure MCP servers with Sigyl."
+---
+## Prerequisites
+Before you start, make sure you install the Sigyl CLI and MCP SDK:
+```bash
+npm install -g @sigyl-dev/cli@latest @modelcontextprotocol/sdk
+```
+
+# Build with Sigyl
+
+We provide two easy-to-follow guides for building MCP servers.<br/>
+1. [Build from Scratch:](#build-from-scratch) If you have a new project or are starting the build process from scratch.
+2. [Build from Endpoints:](#build-from-endpoints) If you have an API that you want to convert into an MCP server.
+## Build from Scratch
+
+<Accordion title="Building from Scratch">
+1. Run the setup wizard
+```bash
+npm create sigyl@latest
+```
+2. Select `Generate a blank template.`
+3. Follow the setup wizard to set up your server files.
+4. Edit the generated `server.ts` or `server.js` file:
+```ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
+import { z } from "zod"
+
+// ============================================================================
+// SERVER CONFIGURATION
+// ============================================================================
+
+export default function createStatelessServer({
+	config,
+}: {
+	config: any;
+}) {
+	const server = new McpServer({
+		name: "generated-mcp-server",
+		version: "1.0.0",
+	});
+
+	// ============================================================================
+	// TEMPLATE TOOL
+	// ============================================================================
+
+	server.tool(
+		"reverseString",
+		"Reverse a string value",
+		{
+			value: z.string().describe("String to reverse"),
+		},
+		async ({ value }) => {
+			return {
+				content: [
+					{ type: "text", text: value.split("").reverse().join("") }
+				]
+			};
+		}
+	);
+
+	return server.server;
+}
+```
+<Accordion
+    title="Configure Secrets (Optional)"
+>
+    Some MCP servers require API keys or allow users to customize their settings.
+
+    We support this by allowing devs to modify the `sigyl.yaml` file to set secrets. You can do this with the optional `startCommand` field:
+
+    ```yaml Example sigyl.yaml
+    runtime: node
+    language: typescript
+    startCommand:
+      type: http
+      configSchema:
+        type: object
+        required:
+          - apiKey
+        properties:
+          apiKey:
+            type: string
+            description: MCP API key (required)
+          debug:
+            type: boolean
+            default: false
+            description: Enable verbose logging
+    ```
+    Navigate to the [sigyl.yaml Reference](/docs/yaml-reference) for more info
+</Accordion>
+</Accordion>
+## Build from Endpoints
+<Note>Sigyl currently only supports Express.js endpoints. We are working to add more support soon!</Note>
+<Accordion title="Building from Endpoints">
+1. Run the setup wizard
+```bash
+npm create sigyl@latest
+```
+2. Select `Generate from express app.`
+3. Follow the setup wizard to set up your server files.
+4. View the generated `server.ts` or `server.js` file. Your tools will already be set based on your express endpoints.
+```ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
+import { z } from "zod"
+
+// ============================================================================
+// SERVER CONFIGURATION
+// ============================================================================
+
+export default function createStatelessServer({
+	config,
+}: {
+	config: any;
+}) {
+	const server = new McpServer({
+		name: "generated-mcp-server",
+		version: "1.0.0",
+	});
+
+	// ============================================================================
+	// AUTO-GENERATED TOOLS FROM EXPRESS ENDPOINTS
+	// ============================================================================
+	// These tools were automatically generated from your Express application.
+	// Each tool corresponds to an endpoint in your Express app.
+
+	// ===== GET /api/users =====
+	server.tool(
+		"getApiUsers",
+		"GET /api/users",
+		{
+	limit: z.number().optional(),
+	offset: z.number().optional(),
+	search: z.string().optional(),
+	status: z.string().optional()
+	},
+		async (args) => {
+			// ===== REQUEST CONFIGURATION =====
+			const url = `http://localhost:${config.appPort || 3000}/api/users`;
+			const method = "GET";
+			
+			// Build request options
+			const requestOptions: any = {
+				method,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			};
+
+			// ===== PARAMETER HANDLING =====
+			const queryParams = new URLSearchParams();
+			const bodyParams: any = {};
+			
+			// Add query parameter limit
+			if (args.limit !== undefined) queryParams.append("limit", String(args.limit));
+			// Add query parameter offset
+			if (args.offset !== undefined) queryParams.append("offset", String(args.offset));
+			// Add query parameter search
+			if (args.search !== undefined) queryParams.append("search", String(args.search));
+			// Add query parameter status
+			if (args.status !== undefined) queryParams.append("status", String(args.status));
+			// ===== URL CONSTRUCTION =====
+			if (queryParams.toString()) {
+				requestOptions.url = url + (url.includes('?') ? '&' : '?') + queryParams.toString();
+			} else {
+				requestOptions.url = url;
+			}
+			// Add body for POST/PUT/PATCH requests
+			if (["POST", "PUT", "PATCH"].includes(method) && Object.keys(bodyParams).length > 0) {
+				requestOptions.body = JSON.stringify(bodyParams);
+			}
+			// ===== HTTP REQUEST & RESPONSE =====
+			try {
+				const response = await fetch(requestOptions.url, requestOptions);
+				const data = await response.json();
+				return data;
+			} catch (error) {
+				return {
+					content: [
+						{
+							type: "text",
+							text: `Error calling GET /api/users: ${error instanceof Error ? error.message : String(error)}`
+						}
+					]
+				};
+			}
+		}
+	);
+	return server.server;
+}
+```
+<Accordion
+    title="Configure Secrets (Optional)"
+>
+    Some MCP servers require API keys or allow users to customize their settings.
+
+    We support this by allowing devs to modify the `sigyl.yaml` file to set secrets. You can do this with the optional `startCommand` field:
+
+    ```yaml Example sigyl.yaml
+    runtime: node
+    language: typescript
+    startCommand:
+      type: http
+      configSchema:
+        type: object
+        required:
+          - apiKey
+        properties:
+          apiKey:
+            type: string
+            description: MCP API key (required)
+          debug:
+            type: boolean
+            default: false
+            description: Enable verbose logging
+    ```
+    Navigate to the [sigyl.yaml Reference](/docs/yaml-reference) for more info
+</Accordion>
+</Accordion>
+
+## Deploy
+Once you are satisfied with your server, deploy with Sigyl's free hosted server service. More details on deployments [here](/docs/deployment-overview)

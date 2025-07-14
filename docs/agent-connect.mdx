@@ -1,0 +1,81 @@
+---
+title: "Agent Connect"
+description: "Connect MCPs directly to your agent workflows"
+---
+
+## Prerequisites
+1. Install the required packages
+```bash
+npm install @sigyl-dev/sdk@latest @modelcontextprotocol/sdk@latest
+```
+
+2. Make sure you have [created a Sigyl API key]()
+
+## Steps
+### Option 1: Using the Sigyl SDK search (recommended)
+Our SDK allows you to search for servers by name or semantically, for easy integration and dynamic server access.
+
+**Step 1: Search for an MCP server**
+
+```typescript
+import { SigylSDK } from '@sigyl-dev/sdk';
+
+const apiKey = 'YOUR_API_KEY'
+const sdk = new SigylSDK({
+  apiKey: apiKey
+});
+
+// Search for a server by keyword or semantic query
+const results = await sdk.searchMCP('ocr'); // or any relevant query
+if (!results.packages.length) throw new Error('No servers found');
+const server = results.packages[0];
+```
+
+**Step 2: Retrieve the MCP server URL**
+
+```typescript
+const mcpInfo = await sdk.getMCPUrl(server.name);
+if (!mcpInfo) throw new Error('Could not retrieve MCP server URL');
+const { url } = mcpInfo;
+```
+
+**Step 3: Connect to the MCP server using the Model Context Protocol SDK**
+
+```typescript
+const { StreamableHTTPClientTransport } = await import("@modelcontextprotocol/sdk/client/streamableHttp.js");
+const { Client } = await import("@modelcontextprotocol/sdk/client/index.js");
+
+const transport = new StreamableHTTPClientTransport(new URL(`${url}/mcp?apikey={apiKey}`));
+
+const client = new Client({
+  name: "Test Client",
+  version: "1.0.0"
+});
+
+await client.connect(transport);
+```
+
+You can now use the `client` to interact with the MCP server's tools and endpoints.
+
+### Option 2: Static Connection
+You can also use the static connection method of setting the connecting MCP server to a single server. 
+1. Get the MCP server HTTP from the MCP page (through the **Connect** button)
+2. Connect to the server directly:
+```ts
+const { StreamableHTTPClientTransport } = await import("@modelcontextprotocol/sdk/client/streamableHttp.js");
+const { Client } = await import("@modelcontextprotocol/sdk/client/index.js");
+
+const serverUrl = "mcp-server-url";
+const apiKey = "your-api-key";
+
+const transport = new StreamableHTTPClientTransport(
+    new URL(`{serverUrl}/mcp?apikey={apiKey}`)
+);
+
+const client = new Client({
+    name: "Test Client",
+    version: "1.0.0"
+});
+
+await client.connect(transport);
+```

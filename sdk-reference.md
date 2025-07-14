@@ -1,8 +1,18 @@
----
-title: "SDK Reference"
-description: "Usage and API reference for the Sigyl SDK."
----
+# Sigyl SDK Documentation
 
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Importing and Instantiating](#importing-and-instantiating)
+- [Class: `SigylSDK`](#class-sigylsdk)
+  - [Constructor](#constructor)
+  - [Methods](#methods)
+- [Types](#types)
+- [Example Usage](#example-usage)
+- [Authentication & Configuration](#authentication--configuration)
+- [Best Practices & Notes](#best-practices--notes)
+
+---
 
 ## Overview
 The Sigyl SDK provides a simple interface for discovering, searching, and retrieving metadata about MCP servers (Model Context Protocol servers) from the Sigyl registry. It is designed for developers who want to integrate, search, or connect to MCP servers, but **does not** handle package creation or deployment.
@@ -11,15 +21,13 @@ The Sigyl SDK provides a simple interface for discovering, searching, and retrie
 
 ## Installation
 ```bash
-npm install @sigyl-dev/sdk@latest
+npm install @sigyl-dev/sdk
 ```
 
 ---
 
 ## Importing and Instantiating
-<CodeGroup>
-
-```typescript TypeScript
+```ts
 import { SigylSDK } from '@sigyl-dev/sdk';
 
 const sdk = new SigylSDK({
@@ -29,25 +37,12 @@ const sdk = new SigylSDK({
 });
 ```
 
-
-```javascript JavaScript
-const { SigylSDK } = require('@sigyl-dev/sdk');
-
-const sdk = new SigylSDK({
-  apiKey: 'YOUR_API_KEY',
-  requireAuth: false,
-  timeout: 10000
-});
-```
-
-</CodeGroup>
-
 ---
 
 ## Class: `SigylSDK`
 
 ### Constructor
-```typescript
+```ts
 new SigylSDK(config?: SDKConfig)
 ```
 - `config` (optional):
@@ -58,7 +53,7 @@ new SigylSDK(config?: SDKConfig)
 ### Methods
 
 #### `searchMCP`
-```typescript
+```ts
 searchMCP(query?: string, tags?: string[], limit?: number, offset?: number): Promise<MCPSearchResult>
 ```
 - **Parameters:**
@@ -69,7 +64,7 @@ searchMCP(query?: string, tags?: string[], limit?: number, offset?: number): Pro
 - **Returns:** `Promise<MCPSearchResult>`
 
 #### `getMCP`
-```typescript
+```ts
 getMCP(name: string): Promise<PackageWithDetails>
 ```
 - **Parameters:**
@@ -77,7 +72,7 @@ getMCP(name: string): Promise<PackageWithDetails>
 - **Returns:** `Promise<PackageWithDetails>`
 
 #### `searchAllPackages`
-```typescript
+```ts
 searchAllPackages(limit?: number): Promise<MCPServer[]>
 ```
 - **Parameters:**
@@ -85,26 +80,26 @@ searchAllPackages(limit?: number): Promise<MCPServer[]>
 - **Returns:** `Promise<MCPServer[]>`
 
 #### `getAllServers`
-```typescript
+```ts
 getAllServers(): Promise<MCPServer[]>
 ```
 - **Returns:** `Promise<MCPServer[]>` (admin only)
 
 #### `updateConfig`
-```typescript
+```ts
 updateConfig(newConfig: Partial<SDKConfig>): void
 ```
 - **Parameters:**
   - `newConfig: Partial<SDKConfig>` — Update SDK config
 
 #### `getConfig`
-```typescript
+```ts
 getConfig(): SDKConfig
 ```
 - **Returns:** `SDKConfig` (current config)
 
 #### `getMCPUrl`
-```typescript
+```ts
 getMCPUrl(name: string): Promise<{ url: string; package: MCPServer } | null>
 ```
 - **Parameters:**
@@ -112,7 +107,7 @@ getMCPUrl(name: string): Promise<{ url: string; package: MCPServer } | null>
 - **Returns:** `Promise<{ url: string; package: MCPServer } | null>`
 
 #### `semanticMCP`
-```typescript
+```ts
 semanticMCP(query: string, count?: number): Promise<MCPServer[]>
 ```
 - **Parameters:**
@@ -121,7 +116,7 @@ semanticMCP(query: string, count?: number): Promise<MCPServer[]>
 - **Returns:** `Promise<MCPServer[]>`
 
 #### `semanticTools`
-```typescript
+```ts
 semanticTools(query: string, count?: number): Promise<Array<MCPTool & { mcp_server: MCPServer }>>
 ```
 - **Parameters:**
@@ -134,7 +129,7 @@ semanticTools(query: string, count?: number): Promise<Array<MCPTool & { mcp_serv
 ## Types
 
 ### `MCPServer`
-```typescript
+```ts
 interface MCPServer {
   id: string;
   name: string;
@@ -150,7 +145,7 @@ interface MCPServer {
 ```
 
 ### `PackageWithDetails`
-```typescript
+```ts
 interface PackageWithDetails extends MCPServer {
   deployments: MCPDeployment[];
   tools: MCPTool[];
@@ -158,7 +153,7 @@ interface PackageWithDetails extends MCPServer {
 ```
 
 ### `MCPDeployment`
-```typescript
+```ts
 interface MCPDeployment {
   id: string;
   package_id: string;
@@ -171,7 +166,7 @@ interface MCPDeployment {
 ```
 
 ### `MCPTool`
-```typescript
+```ts
 interface MCPTool {
   id: string;
   package_id: string;
@@ -183,7 +178,7 @@ interface MCPTool {
 ```
 
 ### `MCPSearchQuery`
-```typescript
+```ts
 interface MCPSearchQuery {
   q?: string;
   tags?: string[];
@@ -193,7 +188,7 @@ interface MCPSearchQuery {
 ```
 
 ### `MCPSearchResult`
-```typescript
+```ts
 interface MCPSearchResult {
   packages: MCPServer[];
   total: number;
@@ -203,7 +198,7 @@ interface MCPSearchResult {
 ```
 
 ### `SDKConfig`
-```typescript
+```ts
 interface SDKConfig {
   registryUrl?: string;
   timeout?: number;
@@ -217,26 +212,26 @@ interface SDKConfig {
 ## Example Usage
 
 ### Import and Instantiate
-```typescript
+```ts
 import { SigylSDK } from '@sigyl-dev/sdk';
 const sdk = new SigylSDK();
 ```
 
 ### Search for MCP Servers
-```typescript
+```ts
 const results = await sdk.searchMCP('image processing');
 console.log(results.packages); // Array of MCPServer
 ```
 
 ### Get Details for a Specific MCP Server
-```typescript
+```ts
 const details = await sdk.getMCP('my-mcp-server');
 console.log(details.tools); // Array of MCPTool
 console.log(details.deployments); // Array of MCPDeployment
 ```
 
 ### Get the URL for a Server (for use with modelcontextprotocol/sdk Client)
-```typescript
+```ts
 const mcpInfo = await sdk.getMCPUrl('my-mcp-server');
 if (mcpInfo) {
   const { url, package: server } = mcpInfo;
@@ -245,13 +240,13 @@ if (mcpInfo) {
 ```
 
 ### Semantic Search for Servers
-```typescript
+```ts
 const servers = await sdk.semanticMCP('OCR and PDF tools', 3);
 console.log(servers);
 ```
 
 ### Semantic Search for Tools
-```typescript
+```ts
 const tools = await sdk.semanticTools('extract text from images', 5);
 for (const tool of tools) {
   console.log(tool.tool_name, tool.mcp_server.name, tool.description);

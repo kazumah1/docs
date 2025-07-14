@@ -4,10 +4,9 @@
   "description": "All in one MCP",
   "theme": "maple",
   "logo": {
-    "light": "logo/light.png",
-    "dark": "logo/dark.png",
-    "href": "https://www.sigyl.dev",
-    "alt": "Sigyl Logo"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png",
+    "href": "https://www.sigyl.dev"
   },
   "favicon": "favicon.svg",
   "colors": {
@@ -19,33 +18,35 @@
   "navigation": {
     "groups": [
       {
-        "group": "Getting Started",
+        "group": "Get Started",
         "pages": [
           "index",
-          "docs/quickstart",
           "docs/installation"
         ]
       },
       {
-        "group": "Configuration",
+        "group": "Build",
         "pages": [
-          "docs/configuration",
-          "docs/security"
-        ]
-      },
-      {
-        "group": "CLI & SDK",
-        "pages": [
+          "docs/build-overview",
           "docs/cli-reference",
-          "docs/sdk-reference",
-          "docs/advanced"
+          "docs/yaml-reference",
+          "docs/server-templates"
         ]
       },
       {
-        "group": "Development",
+        "group": "Deploy",
         "pages": [
-          "docs/troubleshooting",
-          "docs/server-templates"
+          "docs/deployment-overview"
+        ]
+      },
+      {
+        "group": "Connect",
+        "pages": [
+          "docs/use-overview",
+          "docs/API-Keys",
+          "docs/app-integration",
+          "docs/agent-connect",
+          "docs/sdk-reference"
         ]
       },
       {

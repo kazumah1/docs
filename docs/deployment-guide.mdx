@@ -1,0 +1,87 @@
+---
+title: "Deployment Guide"
+description: "How to deploy your Sigyl MCP server to production or the cloud."
+---
+
+# Deployment Guide
+
+<Callout type="info">
+  This guide will help you deploy your Sigyl MCP server for production use, whether locally or in the cloud.
+</Callout>
+
+## Prerequisites
+
+- Node.js and npm installed
+- Your MCP server project (generated via <code>sigyl init</code> or <code>sigyl scan</code>)
+- API key and configuration (see <a href="/docs/configuration">Configuration</a>)
+
+## Deployment Options
+
+<Accordion title="Local Deployment">
+  1. Build your server:
+     ```bash
+     sigyl build
+     ```
+  2. Start the server:
+     ```bash
+     node dist/server.js
+     ```
+  3. The server will run on the port specified in your config (default: 8080).
+</Accordion>
+
+<Accordion title="Cloud Deployment (Vercel, Heroku, etc.)">
+  1. Push your project to a Git repository (GitHub, GitLab, etc.)
+  2. Set up your cloud provider (Vercel, Heroku, AWS, etc.)
+  3. Configure environment variables:
+     - <code>SIGYL_API_KEY</code>
+     - <code>SIGYL_REGISTRY_URL</code> (if using a custom registry)
+  4. Set the start command to:
+     ```bash
+     node dist/server.js
+     ```
+  5. Deploy!
+</Accordion>
+
+## Environment Variables
+
+<Fields>
+  <Fields.Field name="SIGYL_API_KEY" type="string" required>
+    Your MCP API key (required for private packages and production deployments)
+  </Fields.Field>
+  <Fields.Field name="SIGYL_REGISTRY_URL" type="string">
+    Custom registry URL (optional, defaults to https://api.sigyl.dev/api/v1)
+  </Fields.Field>
+  <Fields.Field name="PORT" type="number" defaultValue="8080">
+    Port for the server to listen on
+  </Fields.Field>
+</Fields>
+
+## Security & Best Practices
+
+<Accordion title="API Keys">
+  - Never commit API keys to version control
+  - Use environment variables for secrets
+  - Rotate API keys regularly
+</Accordion>
+
+<Accordion title="Monitoring & Logging">
+  - Monitor API usage via the Sigyl dashboard
+  - Set <code>logLevel</code> in your config for appropriate verbosity
+</Accordion>
+
+## Troubleshooting
+
+<Accordion title="Deployment Fails or Server Won't Start">
+  - Check your environment variables and config
+  - Ensure all dependencies are installed
+  - Review logs for errors
+</Accordion>
+
+<Accordion title="Authentication Issues">
+  - Verify your API key and registry URL
+  - Check for typos or missing environment variables
+</Accordion>
+
+<Callout type="success">
+  Need more help? Visit the <a href="/docs/troubleshooting">Troubleshooting</a> page or join our <a href="https://discord.gg/sigyl">Discord</a> community.
+</Callout> 

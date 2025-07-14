@@ -1,0 +1,59 @@
+---
+title: "Deploy Your Server"
+description: "Deploy your MCP server with Sigyl."
+---
+Have control over your MCP servers and host through Sigyl free of charge.
+
+## Deploy with Sigyl
+
+Follow this simple guide for deploying your MCP server.
+
+### Prerequisites
+
+- a Github Repository with these in the same directory:
+  - a [TypeScript or JavaScript MCP server](/docs/build-overview)
+  - a `sigyl.yaml` file with `runtime: node` and `language:` set to `typescript` or `javascript`
+  - a `package.json` <br/>
+  - a `tsconfig.json`
+
+<Accordion title="Don't have a sigyl.yaml?"
+>
+Make a simple `sigyl.yaml` in the same directory as your `server.ts` file:
+```yaml
+runtime: node
+language: typescript # or javascript
+```
+See the [sigyl.yaml Reference](/docs/yaml-reference) for more details on setting secrets for your MCP.
+</Accordion>
+
+<Accordion title="Don't have a tsconfig.json?">
+Use a default `tsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "*.js"
+  ]
+}
+```
+</Accordion>
+
+### Deploy
+1. Push your changes to GitHub with `server.ts`, `sigyl.yaml`, `package.json`, and `tsconfig.json` in the same directory.
+2. Log into Sigyl with your GitHub account
+3. Navigate to [Sigyl's deploy page](www.sigyl.dev/deploy)
+4. Select your server repository
+5. Click **Deploy MCP Server** to build and host your server

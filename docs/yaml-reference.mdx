@@ -1,0 +1,157 @@
+---
+title: "sigyl.yaml Reference"
+description: "Build and configure MCP servers with Sigyl."
+---
+
+# sigyl.yaml Reference
+
+The `sigyl.yaml` file defines the configuration for MCP-compatible servers and is used for deployment, integration, and registry purposes. This document describes all supported fields, their types, requirements, and best practices for formatting secrets and parameters.
+
+---
+
+## Top-Level Structure
+
+<CodeGroup>
+
+```yaml Required Structure
+runtime: node
+language: typescript
+```
+
+
+```yaml Expanded Secrets Configuration
+runtime: node
+language: typescript
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        description: Your MCP API key (required)
+      logLevel:
+        type: string
+        default: info
+        enum:
+          - debug
+          - info
+          - warn
+          - error
+        description: Logging verbosity level
+    required:
+      - apiKey
+  exampleConfig:
+    apiKey: "sk-..."
+    logLevel: "info"
+```
+
+</CodeGroup>
+
+---
+
+## Field Reference
+
+### `runtime` (required)
+- **Type:** `string` (`node` | `container`)
+- **Description:** Specifies the runtime environment. Use `node` for Node.js servers, `container` for custom Docker containers.
+
+### `language` (optional, node only)
+- **Type:** `string` (`typescript` | `javascript`)
+- **Description:** Source language for Node.js runtime. Defaults to `javascript` if omitted.
+
+### `entryPoint` (optional)
+- **Type:** `string`
+- **Description:** Entry file for the server. Defaults to `server.js`.
+
+### `startCommand` (optional)
+- **Type:** `object`
+- **Fields:**
+  - `type` (required): Must be `http`.
+  - `configSchema` (optional): JSON Schema describing required/optional secrets/config parameters. See [Secrets & Config](#secrets--config).
+  - `exampleConfig` (optional): Example configuration for quickstart.
+
+### `build` (optional, container only)
+- **Type:** `object`
+- **Fields:**
+  - `dockerfile` (optional): Path to Dockerfile (default: `Dockerfile`).
+  - `dockerBuildPath` (optional): Build context directory (default: `.`).
+
+### `env` (optional)
+- **Type:** `object`
+- **Description:** Environment variables to set at runtime. Common values:
+  - `NODE_ENV: production`
+  - `MCP_TRANSPORT: http`
+  - `MCP_ENDPOINT: /mcp`
+
+---
+
+## Secrets & Config
+
+Secrets and configuration parameters are defined in the `configSchema` field under `startCommand`. This uses standard JSON Schema, with the following conventions:
+
+- **properties:** Each key is the parameter name (e.g., `apiKey`, `temperature`).
+- **type:** Data type (`string`, `number`, `boolean`).
+- **description:** Human-readable description.
+- **default:** (optional) Default value.
+- **enum:** (optional) Allowed values.
+- **required:** List of required parameter names.
+
+<CodeGroup>
+  <CodeGroupItem title="Minimal configSchema" default>
+
+```yaml
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        description: Your MCP API key (required)
+    required:
+      - apiKey
+```
+
+  </CodeGroupItem>
+  <CodeGroupItem title="Advanced configSchema">
+
+```yaml
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        description: Your MCP API key (required)
+      logLevel:
+        type: string
+        default: info
+        enum:
+          - debug
+          - info
+          - warn
+          - error
+        description: Logging verbosity level
+    required:
+      - apiKey
+```
+
+  </CodeGroupItem>
+</CodeGroup>
+
+---
+
+## Best Practices
+- **Omit `title` fields** in parameter definitions. Use the parameter name as the display label.
+- Use `description` for human-readable help.
+- Use `required` to specify which parameters are mandatory.
+- Use `enum` for parameters with a fixed set of allowed values.
+- Keep secrets and sensitive config in `configSchema` and reference them in your code as environment variables or config values.
+
+---
+
+## Validation
+- The backend will validate your `sigyl.yaml` using a strict schema. See <code>SigylConfigSchema</code> for details.
+- Invalid or missing required fields will block deployment.
